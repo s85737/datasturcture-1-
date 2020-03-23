@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E422AFA242459620056EDA6 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E422AF9242459620056EDA6 /* main.c */; };
+		3EE41B1E2428AB4000D654D0 /* recursion.c in Sources */ = {isa = PBXBuildFile; fileRef = 3EE41B1D2428AB4000D654D0 /* recursion.c */; };
+		3EE41B202428ADCD00D654D0 /* recursionOverflow.c in Sources */ = {isa = PBXBuildFile; fileRef = 3EE41B1F2428ADCD00D654D0 /* recursionOverflow.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +25,8 @@
 
 /* Begin PBXFileReference section */
 		3E422AF6242459620056EDA6 /* 자료구조(1) */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "자료구조(1)"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E422AF9242459620056EDA6 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		3EE41B1D2428AB4000D654D0 /* recursion.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = recursion.c; sourceTree = "<group>"; };
+		3EE41B1F2428ADCD00D654D0 /* recursionOverflow.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = recursionOverflow.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +59,8 @@
 		3E422AF8242459620056EDA6 /* 자료구조(1) */ = {
 			isa = PBXGroup;
 			children = (
-				3E422AF9242459620056EDA6 /* main.c */,
+				3EE41B1D2428AB4000D654D0 /* recursion.c */,
+				3EE41B1F2428ADCD00D654D0 /* recursionOverflow.c */,
 			);
 			path = "자료구조(1)";
 			sourceTree = "<group>";
@@ -119,7 +122,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E422AFA242459620056EDA6 /* main.c in Sources */,
+				3EE41B202428ADCD00D654D0 /* recursionOverflow.c in Sources */,
+				3EE41B1E2428AB4000D654D0 /* recursion.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
