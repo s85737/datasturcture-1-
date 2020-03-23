@@ -26,7 +26,7 @@ int rFactorial(int paramNum){
     else return (paramNum * rFactorial(paramNum-1));
 }
 
-int main(void) {
+int compare(void) {
     clock_t startIter, stopIter, startRecu, stopRecu;
     double durationIter, durationRecu;
     double result = 0;
