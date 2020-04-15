@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 
-char reverse(char *input, char *output);
+void reverse(char *input, char *output);
 
 int main(void) {
     char s1[100], s2[100], *p, *q;
@@ -25,10 +25,10 @@ int main(void) {
     printf("역순문자열 : %s \n", s2);
 }
 
-char reverse(char *input, char *output){ //입력된 
+void reverse(char *input, char *output){ //입력된
     
     
-    char *init = input; // 시작점 저장
+    char *init = input;
 
     while (*input != '\0') input++ ; // 문자열 s1 배열의 끝지점 탐색
 
@@ -37,5 +37,4 @@ char reverse(char *input, char *output){ //입력된
 
     *output = '\0'; // 배열 s2에 문자열 끝을 지정하기 위해 '\0' 저장
     
-    return 0;
 }

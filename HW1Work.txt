@@ -1,0 +1,37 @@
+Square square1 = new Square();
+square1.makeInvisible();
+square1.makeVisible();
+square1.slowMoveHorizontal(-200);
+square1.slowMoveHorizontal(50*2);
+    returned double 0.2
+square1.moveLeft();
+square1.moveRight();
+square1.moveUp();
+square1.moveHorizontal(11);
+square1.moveDown();
+square1.moveVertical(11);
+square1.slowMoveVertical(12);
+square1.changeColor("black");
+Square square2 = new Square();
+Triangle triangle1 = new Triangle();
+square2.makeVisible();
+square2.slowMoveHorizontal(-200);
+    returned double 0.2
+    returned double 2.6999999999999997
+    returned double -2.7755575615628914E-17
+triangle1.makeInvisible();
+triangle1.makeVisible();
+triangle1.moveVertical(-200);
+triangle1.slowMoveHorizontal(50 *2);
+triangle1.slowMoveHorizontal(50 * 2);
+triangle1.moveVertical(-200);
+triangle1.slowMoveHorizontal(300);
+triangle1.slowMoveHorizontal(-700);
+triangle1.slowMoveVertical(250);
+triangle1.changeSize(100, 100);
+square2.changeColor("yellow");
+square1.changeSize(30);
+square2.changeSize(60);
+Square square3 = new Square();
+square3.makeVisible();
+square3.slowMoveHorizontal(-100);
