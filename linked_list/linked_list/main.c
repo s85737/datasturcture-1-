@@ -106,6 +106,7 @@ void deleteLinkedList(ListNode** h){
         free(iterator);
         iterator = auxilarayNode;
     }
+    h = NULL;
 }
 //insert position
 
