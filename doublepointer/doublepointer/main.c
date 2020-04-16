@@ -14,9 +14,9 @@
 
 typedef struct ListNode {
 
-    char *name;
+    char name[20];
     int studentId;
-    char *grade;
+    char grade[2];
     struct ListNode* link;
     
 } ListNode;
@@ -26,9 +26,9 @@ ListNode *insert_first(ListNode** head, char* name, int studentId, char* grade)
     ListNode* p = (ListNode*)malloc(sizeof(ListNode));
 
     
-    p->name = name;
+    strcpy(p->name, name);
     p->studentId = studentId;
-    p->grade = grade;
+    strcpy(p->grade, grade);
     
 
     p->link = *head;
@@ -51,10 +51,13 @@ ListNode* insert_position(ListNode**head, int position, char* name, int studentI
     ListNode* p = NULL, * q = NULL;
     ListNode* newNode = (ListNode*)malloc(sizeof(ListNode));
     
-    newNode->name = name;
+    strcpy(newNode->name, name);
     newNode->studentId = studentId;
-    newNode->grade = grade;
+    strcpy(newNode->grade, grade);
+   
     p = *head;
+    
+    
     
     if  (position ==1){ //1번 위치에 입력
         newNode -> link = p;
