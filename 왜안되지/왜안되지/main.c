@@ -71,7 +71,6 @@ ListNode *linkedDelete(ListNode* head, int value){
     while(deleteNode != NULL){
         if ( deleteNode-> data == value){
             pre -> link = deleteNode -> link;
-
             break;
         }
         pre = deleteNode;
@@ -100,22 +99,12 @@ int main(int argc, const char * argv[]) {
     
     printf("\nArray와 Singly Linked List 비교\n");
     
+
     
-    printf("\narray\n");
-    
-    start = clock();
-    for(int i = 0; i<10000; i++){
-        arr[i] = i;
-    }
-    end = clock();
-    duration = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("수행시간은 %lf초 입니다.\n\n", duration);
-    
-    
-    printf("\nlinked list\n");
+    printf("linked list\n");
     
     start = clock();
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < 10; i++)
     {
         head = linkedFirst(head, i);
         
@@ -123,76 +112,17 @@ int main(int argc, const char * argv[]) {
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
     printf("수행시간은 %lf초 입니다.\n\n", duration);
-    
-    printf("\narray ran sum\n");
-    start = clock();
-    for(int i = 0; i < 1000; i++){
-        value = rand() % 10000;
-        for(int j = 0; j < 10000; j++)
-        {
-            if(arr[j] == value){
-                arraySum += arr[j];
-                count2++;
-                
-            }
-        }
-        
-    }
-    printf("합계 : %.0f\n", arraySum);
-    printf("count: %d\n", count2);
-    end = clock();
-    duration = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("수행시간은 %lf초 입니다.\n\n", duration);
-    
-    
-    printf("\nlinked list ran sum\n");
-    start = clock();
-        for(int i = 0; i < 1000; i++)
-    {
-        head = linkedRandom(head, (rand() % 10000));
-    }
-    printf("합계 : %.0f\n", linkedSum);
-    printf("count: %d\n", count1);
-    end = clock();
-    duration = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("수행시간은 %lf초 입니다.\n", duration);
-    
-
-    printf("\narray delete\n");
-       start = clock();
-       printf("삭제된 데이터 데이터 : \n");
-       for(int i = 0; i < 1000; i++){
-           value = rand() % 10000;
-           for(int j = 0; j < 10000; j++)
-           {
-               if(arr[j] == value){
-                   arr[j] = -1;
-                   count4++;
-                   
-               }
-           }
-           
-       }
-       printf("count: %d\n", count4);
-       end = clock();
-       duration = (double)(end - start) / CLOCKS_PER_SEC;
-        printf("수행시간은 %lf초 입니다.\n", duration);
-    
-    printf("\nlinked list delete\n");
+   
+    printf("linked list delete\n");
     start = clock();
 
+       head = linkedDelete(head, 1);
     
-        for(int k = 0; k < 1000; k++)
-    {
-        head = linkedDelete(head, rand() % (10000-k));
-    }
     printf("count: %d\n", count3);
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
     printf("수행시간은 %lf초 입니다.\n", duration);
-    
-   
-
+    print_list(head);
 
 }
 
