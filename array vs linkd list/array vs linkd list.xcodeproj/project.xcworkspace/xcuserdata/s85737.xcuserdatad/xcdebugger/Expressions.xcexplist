@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VariablesViewState
    version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "dLinkedFirst:main.c">
+      </ContextState>
+      <ContextState
+         contextName = "dlinkedRandom:main.c">
+      </ContextState>
+      <ContextState
+         contextName = "main:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "dlinkedSum">
+            </PersistentString>
+            <PersistentString
+               value = "linkedSum">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
 </VariablesViewState>
