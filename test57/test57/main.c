@@ -72,7 +72,7 @@ ListNode *linkedRandom(ListNode* head, int value){
     ListNode* p = head;
     
     
-    
+    printf("%d,",value);
     while(p != NULL){
         
         if ( p-> data == value){ //랜덤으로 준 value 값과 해당 데이터가 같을 시 linkedSum에 더함
@@ -91,7 +91,7 @@ DListNode *dlinkedRandom(DListNode* dllHead, int value){
     
     DListNode* p = dllHead;
     
-    
+    printf("%d,",value);
     
     while(p != NULL){
         
@@ -112,7 +112,7 @@ ListNode *linkedDelete(ListNode* head, int value){
     ListNode* pre; //삭제할 노드 뒤에 따라다니는 노드
     ListNode* deleteNode = head; // 삭제할 노드
     
-    
+    printf("%d,",value);
     if ((deleteNode -> data == value) && (deleteNode == head)) //value 가 맨앞의 노드일 때 삭제 예외처리
     {
         head = deleteNode -> link; //삭제할 노드의 link값을 header에 저장
@@ -139,7 +139,7 @@ DListNode *dlinkedDelete(DListNode* dllHead, int value){
     DListNode* pre; //삭제할 노드 뒤에 따라다니는 노드
     DListNode* deleteNode = dllHead; // 삭제할 노드
     
-    
+    printf("%d,",value);
     if ((deleteNode -> dllData == value) && (deleteNode == dllHead)) //value 가 맨앞의 노드(head)일 때 삭제 예외처리
     {
         dllHead = deleteNode -> dllRlink;  //삭제할 노드의 link값을 header에 저장
@@ -188,7 +188,7 @@ int main(int argc, const char * argv[]) {
     
     clock_t start, end;
     double duration;
-    int arr[10000]; //index가 10000개인 배열 생성
+    int arr[10]; //index가 10000개인 배열 생성
     int value = 0;
     srand((unsigned int)time(NULL)); //난수생성
     double arraySum=0; // 랜덤 index의 데이터값의 합을 구하기 위한 변수
@@ -202,7 +202,7 @@ int main(int argc, const char * argv[]) {
     
     //index가 10000개인 배열 생성
     start = clock();
-    for(int i = 0; i<10000; i++){
+    for(int i = 0; i<10; i++){
         arr[i] = i;
         //testcode        printf("%d->",arr[i]);
     }
@@ -216,25 +216,25 @@ int main(int argc, const char * argv[]) {
     
     //index가 10000개인 singly linked list 생성
     start = clock();
-    for(int i = 0; i < 10000; i++){
+    for(int i = 0; i < 10; i++){
         head = linkedFirst(head, i);
     }
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
     printf("수행시간은 %lf초 입니다.\n\n", duration);
-    //    print_list(head);
+    print_list(head);
     
     // index가 10000개인 doubly linked list 생성
     printf("\n doublelylinked list\n");
     
     start = clock();
-    for(int i = 0; i < 10000; i++){
+    for(int i = 0; i < 10; i++){
         dllHead = dLinkedFirst(dllHead, i);
     }
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
     printf("수행시간은 %lf초 입니다.\n\n", duration);
-    //    print_dllList(dllHead);
+    print_dllList(dllHead);
     
     
     printf("\nArray, Singly Linked List, Doubly Linked List 랜덤 index안의 데이터의 합 \n");
@@ -242,9 +242,10 @@ int main(int argc, const char * argv[]) {
     //array일때 랜덤 index의 합
     printf("\narray ran sum\n");
     start = clock();
-    for(int i = 0; i < 1000; i++){
-        value = rand() % 10000; // 0~ 9999까지의 난수생성
-        for(int j = 0; j < 10000; j++){
+    for(int i = 0; i < 5; i++){
+        value = rand() % 10; // 0~ 9999까지의 난수생성
+        printf("%d,",value);
+        for(int j = 0; j < 10; j++){
             if(arr[j] == value){
                 arraySum += arr[j];
                 break; //해당 index의 데이터 탐색 후 발견하면 동작중지
@@ -260,25 +261,27 @@ int main(int argc, const char * argv[]) {
     //singly linked list일때 랜덤 index의 합
     printf("\nlinked list ran sum\n");
     start = clock();
-    for(int i = 0; i < 1000; i++){
-        head = linkedRandom(head, (rand() % 10000));
+    for(int i = 0; i < 5; i++){
+        head = linkedRandom(head, (rand() % 5));
+        
     }
     printf("합계 : %.0f\n", linkedSum);
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
     printf("수행시간은 %lf초 입니다.\n", duration);
+    print_list(head);
     
     //doubly linked list일때 랜덤 index의 합
     printf("\ndoubly linked list ran sum\n");
     start = clock();
-    for(int i = 0; i < 1000; i++){
-        dllHead = dlinkedRandom(dllHead, (rand() % 10000));
+    for(int i = 0; i < 5; i++){
+        dllHead = dlinkedRandom(dllHead, (rand() % 10));
     }
     printf("합계 : %.0f\n", dlinkedSum);
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
     printf("수행시간은 %lf초 입니다.\n", duration);
-    
+    print_dllList(dllHead);
     
     printf("\nArray, Singly Linked List, Doubly Linked List 랜덤 index안의 데이터의 삭제 \n");
     
@@ -286,48 +289,58 @@ int main(int argc, const char * argv[]) {
     printf("\narray delete\n");
     start = clock();
     printf("삭제된 데이터 데이터 : \n");
-    for(int i = 0; i < 1000; i++){
-        value = rand() % 10000;
-        for(int j = 0; j < 10000; j++)
+    for(int i = 0; i < 5; i++){
+        value = rand() % 10;
+        printf("%d,",value);
+        for(int j = 0; j < 10; j++)
         {
             if(arr[j] == value){
                 arr[j] = -1;
-                //                   printf("%d->",arr[i]);
+                
             }
         }
         
     }
+    printf("\n");
+    for(int j = 0; j < 10; j++)
+        printf("%d->",arr[j]);
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
     printf("수행시간은 %lf초 입니다.\n", duration);
-    
+    printf("\n");
     //singly linked list 일때 랜덤 index 데이터 삭제
     printf("\nlinked list delete\n");
+    printf("삭제된 데이터 데이터 : \n");
     start = clock();
     
     
-    for(int k = 0; k < 1000; k++){
-        head = linkedDelete(head, (rand()%(10000-k))); //난수 생성 범위가 계속해서 줄어듬
+    for(int k = 0; k < 5; k++){
+        head = linkedDelete(head, (rand()%(10-k))); //난수 생성 범위가 계속해서 줄어듬
     }
     
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("\n");
     printf("수행시간은 %lf초 입니다.\n", duration);
+    print_list(head);
     
     //doubly linked list 일때 랜덤 index 데이터 삭제
     printf("\ndoubly linked list delete\n");
+    
+    printf("삭제된 데이터 데이터 : \n");
     start = clock();
-    //    print_list(head);
     
     
-    for(int k = 0; k < 1000; k++){
-        dllHead = dlinkedDelete(dllHead,(rand()%(10000-k)));
+    
+    for(int k = 0; k < 5; k++){
+        dllHead = dlinkedDelete(dllHead,(rand()%(10-k)));
     }
     
     end = clock();
     duration = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("\n");
     printf("수행시간은 %lf초 입니다.\n", duration);
-    //    print_dllList(dllHead);
+    print_dllList(dllHead);
     
 }
 
