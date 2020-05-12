@@ -68,6 +68,7 @@ DListNode *dLinkedFirst(DListNode* dllHead, int value){
 
 //singly linked list 랜덤 index의 데이터의 합 함수
 ListNode *linkedRandom(ListNode* head, int value){
+
     
     ListNode* p = head;
     
