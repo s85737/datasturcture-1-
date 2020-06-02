@@ -13,7 +13,6 @@ void fileCopy();
 void memberAdd();
 void memberEdit();
 void clear_stdin();
-int emailCheck();
 
 int count = 0;
 
@@ -21,46 +20,10 @@ void clear_stdin(){
     int ch;
     while ((ch = getchar()) != EOF && ch != '\n') {};
     
-    
 }
-
-int emailCheck(char* email){
-    
-    if(strlen(email) < 5) return 0; //이메일이 최소길이를 충족하지 못할 때  예) s@c.n
-    
-    int dotPosition = 0;
-    int atPosition = 0;
-    int dotNumber = 0;
-    int atNumber = 0;
-
-    for(int i =0; i<strlen(email); i++){
-        if(i>0 && email[i] == '@'){
-            atPosition = i; // @의 위치를 잡았을 때, i가 0보다 크다면 @ 위치값 저장.
-            atNumber++;
-            if(atNumber > 1) return 0;
-        }
-        
-        //.의 위치를 잡았을 때 @의 위치값이 0이상이고, 현재 포인터의 위치는 @의 앞일때 위치값 저장
-        if(email[i] == '.' && atPosition > 0 && i > atPosition){
-            dotPosition = i;
-            dotNumber++;
-            if(dotNumber > 1) return 0;
-        }
-    }
-        
-    // email 조건을 만족하기 위해 @의 위치는 최소한 email[1]에 있어야하고, .의 위치는 email[3]에 있어야 한다.
-    if(strlen(email)-1 > dotPosition
-       &&atPosition > 0
-       &&dotPosition > 2
-       &&(dotPosition-atPosition) > 0
-       ) return 1;
-    else return 0;
-    
-}
-
 void memberAdd(){
     
-    FILE* fd = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/Student_List.txt", "a");
+    FILE* fd = fopen("Student_List.txt", "a");
     
     //예외처리 : 파일 open 실패
     if (fd == NULL){
@@ -106,10 +69,6 @@ void memberAdd(){
     
     fprintf(stdout, "이메일 : ");
     fscanf(stdin, "%255s", email); //버퍼 오버플로우 방지, email 띄어쓰기 입력 방지로 scanf 사용
-    if(emailCheck(email) != 1){
-        fprintf(stderr, "\n email format error!! \n");
-        exit(1);
-    }
     lenEmail = strlen(email);
     if (lenEmail == 255) name[lenEmail] = '\n';
     clear_stdin();
@@ -164,8 +123,8 @@ void memberAdd(){
 
 // delete member function
 void memberDel(){
-    FILE *fd = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/Student_List.txt", "r+");
-    FILE *fdc = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/copy.txt", "w+");
+    FILE *fd = fopen("Student_List.txt", "r+");
+    FILE *fdc = fopen("copy.txt", "w+");
     char buffer[MAX_SIZE], *ptr, name[MAX_SIZE], email[MAX_SIZE], temp[MAX_SIZE], input[MAX_SIZE];
     char cpyBuf[MAX_BUF];
     int wordPo, age, wordSize, intResult, currPo, prevPo;
@@ -258,8 +217,8 @@ void memberDel(){
 // edit member function
 void memberEdit(){
     
-    FILE *fd = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/Student_List.txt", "r+");
-    FILE *fdc = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/copy.txt", "w+");
+    FILE *fd = fopen("Student_List.txt", "r+");
+    FILE *fdc = fopen("copy.txt", "w+");
     char buffer[MAX_SIZE], *ptr, name[MAX_SIZE], email[MAX_SIZE], temp[MAX_SIZE], input[MAX_SIZE];
     char cpyBuf[MAX_BUF];
     int wordPo, age, wordSize, intResult, currPo, prevPo;
@@ -347,10 +306,6 @@ void memberEdit(){
                 
                 fprintf(stdout, "이메일 : ");
                 fscanf(stdin, "%255s", email); //버퍼 오버플로우 방지
-                if(emailCheck(email) != 1){
-                    fprintf(stderr, "\n email format error!! \n");
-                    exit(1);
-                }
                 wordSize = strlen(email);
                 if (wordSize == 255) name[wordSize] = '\n';
                 clear_stdin();
@@ -396,8 +351,8 @@ void memberEdit(){
 }
 
 void fileCopy(){
-    FILE *fd = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/Student_List.txt", "w");
-    FILE *fdc = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/copy.txt", "r");
+    FILE *fd = fopen("Student_List.txt", "w");
+    FILE *fdc = fopen("copy.txt", "r");
     char cpyBuf[MAX_BUF];
     
     while(!feof(fdc)){              //수정된 데이터 fd로 이동
@@ -415,7 +370,7 @@ void fileCopy(){
 
 // show memeber list fucntion
 void showList(){
-    FILE *fd = fopen("/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/Student_List.txt", "r");
+    FILE *fd = fopen("Student_List.txt", "r");
     char cpyBuf[MAX_SIZE], property[MAX_SIZE], resultBuf[MAX_BUF];
     int wordsize;
     
@@ -489,7 +444,8 @@ void showMenu(){
         case '3' : memberDel(); break;
         case '4' : showList(); break;
         case '5' : fprintf(stdout, "\n 종료합니다. \n\n"); return;
-        default :  fprintf(stderr, "\n\n메뉴 번호를 확인해 주세요\n\n"); break;//예외처리: 잘못된 번호가 입력 되었을 시
+        default :  fprintf(stderr, "\n\n메뉴 번호를 확인해 주세요\n\n"); break;//예외처리: 잘못된 번호가 입력
+            되었을 시
     }
     
     
