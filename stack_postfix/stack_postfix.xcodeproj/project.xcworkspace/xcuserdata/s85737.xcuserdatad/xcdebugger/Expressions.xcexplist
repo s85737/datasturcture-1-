@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "infix_to_postfix:main.c">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
