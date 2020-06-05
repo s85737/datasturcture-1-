@@ -1,0 +1,11 @@
+NAME 13 jehyeon choi3
+AGE 26
+EMAIL 7 sssssss
+NAME 13 jehyeon choi4
+AGE 26
+EMAIL 7 sssssss
+NAME 13 jehyeon choi5
+AGE 26
+EMAIL 8 sssssssv
+NAME 6 ssss83
+AGE 20

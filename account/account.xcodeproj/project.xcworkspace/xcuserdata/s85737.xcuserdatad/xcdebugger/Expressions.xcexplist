@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "memberAdd:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "stdin">
+            </PersistentString>
+            <PersistentString
+               value = "fscanf(stdin, &quot;%255s&quot;, email)">
+            </PersistentString>
+            <PersistentString
+               value = "fprintf(fd,&quot;AGE %d\n&quot;, age)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "emailCheck:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strlen(email)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "memberEdit:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strlen(buffer)">
+            </PersistentString>
+            <PersistentString
+               value = "fprintf(fdc,&quot;\nNAME %d %s&quot;,wordSize, name);">
+            </PersistentString>
+            <PersistentString
+               value = "currPo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "showList:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strlen(cpyBuf)">
+            </PersistentString>
+            <PersistentString
+               value = "ftell(fd)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
