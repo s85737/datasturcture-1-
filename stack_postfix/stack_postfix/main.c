@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 //스택 element 의 자료형을 int로 정의
 
 typedef int element;
@@ -36,7 +35,7 @@ void push(stackNode** top, element item){
     }
 
 //stack pop함수
-element *pop(stackNode** top){
+element pop(stackNode** top){
     element item;
     stackNode** temp; //노드를 메모리에서 해제 시키기 위해 따로 temp 사용
     

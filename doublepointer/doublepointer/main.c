@@ -1,7 +1,7 @@
 //
 //  main.c
 //  doublepointer
-//t
+//
 //  Created by 최제현 on 2020/04/16.
 //  Copyright © 2020 5468107최제현. All rights reserved.
 //
