@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3EBEAEBE247FC1BE003B78BF /* account */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = account; sourceTree = BUILT_PRODUCTS_DIR; };
+		3EBEAEBE247FC1BE003B78BF /* account */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = account; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EBEAEC1247FC1BE003B78BF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = main.c; path = "/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/main.c"; sourceTree = "<absolute>"; };
 		3EBEAEC824812A4E003B78BF /* Student_List.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Student_List.txt; path = "/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/Student_List.txt"; sourceTree = "<absolute>"; };
 		3EBEAEC924815806003B78BF /* copy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = copy.txt; path = "/Users/s85737/Documents/2020 1학기/과제/컴공창/5.28/account/account/copy.txt"; sourceTree = "<absolute>"; };

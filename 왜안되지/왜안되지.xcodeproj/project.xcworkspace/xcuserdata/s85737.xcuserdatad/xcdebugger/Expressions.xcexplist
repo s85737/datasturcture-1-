@@ -6,6 +6,12 @@
          contextName = "main:main.c">
          <PersistentStrings>
             <PersistentString
+               value = "change[2]">
+            </PersistentString>
+            <PersistentString
+               value = "itoa[1]">
+            </PersistentString>
+            <PersistentString
                value = "data[cnt].name">
             </PersistentString>
          </PersistentStrings>
