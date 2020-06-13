@@ -28,6 +28,7 @@
 		3E22FECD2490E0F800E167F2 /* encodedFile.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encodedFile.txt; sourceTree = "<group>"; };
 		3E22FECE2490E10200E167F2 /* test1_sample.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test1_sample.txt; sourceTree = "<group>"; };
 		3E22FECF2490F2D600E167F2 /* decodedFile.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = decodedFile.txt; sourceTree = "<group>"; };
+		3E96987E24946FD2003D4C2E /* encodedFile2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = encodedFile2.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 				3E22FECE2490E10200E167F2 /* test1_sample.txt */,
 				3E22FECF2490F2D600E167F2 /* decodedFile.txt */,
 				3E22FECD2490E0F800E167F2 /* encodedFile.txt */,
+				3E96987E24946FD2003D4C2E /* encodedFile2.txt */,
 				3E22FEC6248F46FC00E167F2 /* main.c */,
 			);
 			path = finalproject;
