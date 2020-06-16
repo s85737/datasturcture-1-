@@ -11,39 +11,45 @@
 #include <ctype.h>
 #include <string.h>
 
+int temp = 0;
 
-int* singi_atol(char *s, FILE* encodedFIle)
+int* singi_atol(char *s)
 {
     int i;
     
     int *change = (unsigned int *)malloc(strlen(s)*2);
+    
     for (i=0; i < (int)strlen(s) ; i++){
-        change[i] =(unsigned char)s[i];
+        change[i] = (unsigned char)s[i];
+        temp += change[i];
     }
     return change;
-    
+    free(change);
 }
 
-/**
-*encoder 함수에서  *USER STATUS* 문자열을 인식하면 실행되는 함수입니다.
-*파일포인터는 USER STATUS 끝에서 시작한다고 가정하고, ID 등등을 인식하면
-*짧게 압축하여 인코딩 될 TXT 파일에 저장합니다.
-*라인마다 ID: value 라고 보고, 라인마다 탐색을 해서 저장합니다.
 
-@author 최제현
-@version 06/09 - *USER STATUS* 문자열 인식 구현은 하지 않았습니다. 추후 수정
-params 파일원본,인코딩될 파일
-*/
+
+/**
+ *encoder 함수에서  *USER STATUS* 문자열을 인식하면 실행되는 함수입니다.
+ *파일포인터는 USER STATUS 끝에서 시작한다고 가정하고, ID 등등을 인식하면
+ *짧게 압축하여 인코딩 될 TXT 파일에 저장합니다.
+ *라인마다 ID: value 라고 보고, 라인마다 탐색을 해서 저장합니다.
+ 
+ @author 최제현
+ @version 06/09 - *USER STATUS* 문자열 인식 구현은 하지 않았습니다. 추후 수정
+ params 파일원본,인코딩될 파일
+ */
 
 FILE* encodeUserState(FILE* encodedFile, FILE* originalFile){
     char charValue[1024], id[1024];
-    int intValue, temp, *ASCIITemp;
+    int intValue, *ASCIITemp, i;
     
     fgets(charValue, 255, originalFile);
     //USER STATUS 인식 추가
     if((strcmp(charValue, "*USER STATUS*\n") == 0)){
         fprintf(encodedFile,"d1\n");
     }
+   
     
     
     fscanf(originalFile, "%s ",id);
@@ -52,22 +58,27 @@ FILE* encodeUserState(FILE* encodedFile, FILE* originalFile){
         intValue = strlen(charValue)-1;
         fprintf(encodedFile,"%d ",intValue);
         fprintf(encodedFile,"%s",charValue);
-        ASCIITemp = singi_atol(charValue, encodedFile);
-        for(int i =0; i < intValue; i++ )
+        ASCIITemp = singi_atol(charValue);
+        for(i =0; i < intValue; i++ )
             fprintf(encodedFile,"%d ",ASCIITemp[i]);
-        
     }
+    
+    fprintf(encodedFile,"\n");
+    fprintf(encodedFile,"%d",temp-10);
+    temp = 0;
+    
     fscanf(originalFile, "%s ",id);
     if((strcmp(id, "NAME:") == 0)){
         fgets(charValue, 255, originalFile);
         intValue = strlen(charValue)-1;
         fprintf(encodedFile,"\n%d ",intValue);
         fprintf(encodedFile,"%s",charValue);
-        ASCIITemp = singi_atol(charValue, encodedFile);
-        for(int i =0; i < intValue; i++ )
+        ASCIITemp = singi_atol(charValue);
+        for(i =0; i < intValue; i++ )
             fprintf(encodedFile,"%d ",ASCIITemp[i]);
-        
     }
+    fprintf(encodedFile,"\n");
+    fprintf(encodedFile,"%d",temp-10);
     fscanf(originalFile, "%s ",id);
     
     if((strcmp(id, "GENDER:") == 0)){
@@ -113,88 +124,87 @@ FILE* encodeUserState(FILE* encodedFile, FILE* originalFile){
 
 char* ASCIICheck(char* input){
     
-char* token = (char*)malloc(sizeof(char)*256);
-int* change = (int*)malloc(sizeof(int)*512);
-int i=0;
-
+    char* token = (char*)malloc(sizeof(char)*256);
+    int* change = (int*)malloc(sizeof(int)*512);
+    int i=0;
+    
     do{
         if(* input     == '\n' ||
            *(input-1) == '\n' ||
            *(input-2) == '\n' ||
            *(input+1) == '\n' ||
-           *(input+2) == '\n') break;
-        else if(*(input+3) == '\n') *(input+2);
+           *(input+2) == '\n') {
+            sscanf(input, "%d ",&change[i]);
+            token[i] = change[i];
+            token[i+1] = '\0';
+            break;
+        }
+        else if (*(input+3) == '\n'){
+            input -= 1;
+            sscanf(input, "%d ",&change[i]);
+            token[i] = change[i];
+            break;
+        }else{
         sscanf(input, "%d ",&change[i]);
         
         token[i] = change[i];
         i++;
+        }
     }while(input+=3);
     
-      return token;
-      }
+    return token;
+}
 
 /**
-*문자열 라인의 변조 여부를 탐색합니다.
+ *문자열 라인의 변조 여부를 탐색합니다.
+ 
+ 
+ 
+ @author 최제현
+ @version 6/13
+ @params line : 현재 줄, intValue : 원본파일의 문자열 길이, cTemp : ASCII문자열, charValue : 읽어온 문자열
+ @return
+ 0 : charValue 문자열 출력
+ 1 : ASCII 문자열 출력
+ */
 
-
-
-@author 최제현
-@version 6/13
-@params line : 현재 줄, intValue : 원본파일의 문자열 길이, cTemp : ASCII문자열, charValue : 읽어온 문자열
-@return
-0 : charValue 문자열 출력
-1 : ASCII 문자열 출력
-*/
-
-int modifyCheck(int line ,int intValue ,char* cTemp, char* charValue){
+int modifyCheck(int line ,int intValue ,int ASCIISum, char* charResult, char* charValue){
     
-    size_t strLen, ASCIILen;
-    int temp;
+    size_t lenStr, ASCIILen;
+    int intTemp=0;
     
-    strLen = strlen(charValue);
-    ASCIILen = strlen(cTemp);
+    lenStr = strlen(charValue);
+    ASCIILen = strlen(charResult);
     
-    if(intValue == strLen &&
-       strLen == ASCIILen &&
-       strcmp(charValue, cTemp) == 0){
-        //case 1 : 아스키 길이, 원본길이, 문자열길이가 모두 일치하고 아스키와 문자열이 일치할 때
+    for(int i = 0; i< ASCIILen+1; i++){
+        intTemp += charResult[i];
+    }
+    
+    if(strcmp(charValue, charResult) == 0 &&
+       intValue == lenStr &&
+       ASCIISum == intTemp
+       ){
+        //case 1 : 원본 문자열과, ASCII 문자열이 둘다 변조되지 않았을 때
         return 0;
         
-    }else if(intValue == strLen &&
-             strLen == ASCIILen &&
-             strcmp(charValue, cTemp) > 0 &&
-             strcmp(charValue, cTemp) < 2){
-        //case 2 : int value가 변조된것이 의심될 때
-        //문자열 길이와, ASCII길이가 같고, 문자열이 같을 때
-        fprintf(stderr, "라인 %d에서 변조가 일어났습니다.\n", line);
-        return 1;
-    }
-    else if(intValue == strLen &&
-             strLen == ASCIILen &&
-             strcmp(charValue, cTemp) >= 2){
-        //case 2 : int value가 변조된것이 의심될 때
-        //문자열 길이와, ASCII길이가 같고, 문자열이 같을 때
-        fprintf(stderr, "라인 %d에서 변조가 일어났습니다.\n", line);
-        return 0;
-    }
-        else if(intValue == strLen &&
-             strLen == ASCIILen &&
-             strcmp(charValue, cTemp) < 0){
-        //case 2 : int value가 변조된것이 의심될 때
-        //문자열 길이와, ASCII길이가 같고, 문자열이 같을 때
-        fprintf(stderr, "라인 %d에서 변조가 일어났습니다.\n", line);
-        return 0;
-    }else if(intValue != strLen &&
-             intValue == ASCIILen &&
-             strcmp(charValue, cTemp) != 0){
-        //case 3 : chaeValue가 변조된것이 의심될 때
-        fprintf(stderr, "라인 %d에서 변조가 일어났습니다.\n", line);
-        return 1;
-    }else if(intValue == strLen &&
-             strcmp(charValue, cTemp) != 0){
-        //case 4 : ASCII가 변조된것이 의심될 때
-        fprintf(stderr, "라인 %d에서 변조가 일어났습니다.\n", line);
-        return 0;
+    }else{
+        
+        //case 2 : 원본 문자열이나, ASCII 문자열 둘 중 하나가 변조되었을 때
+        fprintf(stderr, "라인 %d에서 변조가 일어났습니다. %d %d %s %s\n", line, intValue, ASCIISum, charResult, charValue);
+        if(ASCIISum == intTemp){
+            //case 2-1 : 아스키코드 합의 값이 일치할때, 나머지 2개 변조의심
+            return 1;
+        }else if(intValue == lenStr){
+            // 합의 값이 둘다 일치하지 않을때는 나머지 2개를 신뢰, 문자열 길이가 일치하면 0출
+            return 0;
+        }else{
+            //case 2-2 : 아스키 코드 합이 둘다 일치하지않고, 문자열 길이도 일치하지 않을때
+            //감점 최대한 덜되게
+        
+            return 0;
+            
+        }
+        
     }
     
     //default
@@ -219,8 +229,9 @@ void decodeUserState(){
     
     FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/finalproject/finalproject/encodedFile2.txt", "rt+");
     
-    char charValue[1024], id[1024], cTemp[1024];
-    int intValue, strLen, temp, ASCIILen, line = 0;
+    char charValue[1024], cTemp[1024];
+    char *charResult = malloc(sizeof(char)*256);
+    int intValue, temp, ASCIISum, line = 0;
     
     fseek(encodedFile, 0, SEEK_SET);
     
@@ -238,14 +249,15 @@ void decodeUserState(){
     
     //ASCII코드 문자열로 변환
     fgets(cTemp, 256, encodedFile);
-    strcpy(cTemp, ASCIICheck(cTemp));
+    fscanf(encodedFile,"%d", &ASCIISum);
+    strcpy(charResult, ASCIICheck(cTemp));
     
-    temp = modifyCheck(line, intValue, cTemp, charValue);
+    temp = modifyCheck(line, intValue, ASCIISum, charResult, charValue);
     
     if(temp == 0){
         fprintf(decodedFile,"ID: %s", charValue);
     }else{
-        fprintf(decodedFile,"ID: %s", cTemp);
+        fprintf(decodedFile,"ID: %s", charResult);
     }
     
     line++;
@@ -255,15 +267,15 @@ void decodeUserState(){
     
     //유니코드 비교 추가
     fgets(cTemp, 256, encodedFile);
-    strcpy(cTemp, ASCIICheck(cTemp));
+    fscanf(encodedFile,"%d", &ASCIISum);
+    strcpy(charResult, ASCIICheck(cTemp));
     
-    
-    temp = modifyCheck(line, intValue, cTemp, charValue);
+    temp = modifyCheck(line, intValue, ASCIISum, charResult, charValue);
     
     if(temp == 0){
         fprintf(decodedFile,"\nNAME: %s", charValue);
     }else{
-        fprintf(decodedFile,"\nNAME: %s", cTemp);
+        fprintf(decodedFile,"\nNAME: %s", charResult);
     }
     
     
@@ -275,13 +287,32 @@ void decodeUserState(){
     else fprintf(stderr,"예외처리 필요!");
     
     //유니코드 비교 추가
-    if(intValue == temp & temp == 0){ //charValue 자체 문자열을 바꿔도 되지만, 귀찮아서 이래함
+    if(intValue == temp & temp == 0){ //charValue 자체 문자열을 바꿔도 되지만,
         fprintf(decodedFile,"\nGENDER: MALE");
     }else if (intValue == temp & temp == 1){
         fprintf(decodedFile,"\nGENDER: FEMALE");
     }
     
     fclose(decodedFile);
+    
+    line++;
+    fscanf(encodedFile, "%d ",&intValue);
+    fgets(charValue, 255, encodedFile);
+    charValue[strlen(charValue)-1] = '\0';
+    //길이에서 개행문자 제거
+
+    //ASCII코드 문자열로 변환
+    fgets(cTemp, 256, encodedFile);
+    fscanf(encodedFile,"%d", &ASCIISum);
+    strcpy(charResult, ASCIICheck(cTemp));
+
+    temp = modifyCheck(line, intValue, ASCIISum, charResult, charValue);
+
+    if(temp == 0){
+      fprintf(decodedFile,"AGE: %s\n", charValue);
+    }else{
+      fprintf(decodedFile,"AGE: %s\n", charResult);
+    }
     
 }
 
