@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "GLOBAL">
+         <PersistentStrings>
+            <PersistentString
+               value = "token2[3]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "singi_atol:main.c">
+      </ContextState>
+      <ContextState
+         contextName = "ASCIICheck:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "token[1]">
+            </PersistentString>
+            <PersistentString
+               value = "change[1]">
+            </PersistentString>
+            <PersistentString
+               value = "change[8]">
+            </PersistentString>
+            <PersistentString
+               value = "token[0]">
+            </PersistentString>
+            <PersistentString
+               value = "change[7]">
+            </PersistentString>
+            <PersistentString
+               value = "(sscanf(input, &quot;%d &quot;, &amp;change[i]))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "modifyCheck:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "intTemp">
+            </PersistentString>
+            <PersistentString
+               value = "strcmp(charValue, cTemp)">
+            </PersistentString>
+            <PersistentString
+               value = "*cTemp">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "encodeUserState:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strlen(ASCIITemp)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
