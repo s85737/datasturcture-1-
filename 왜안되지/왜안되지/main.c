@@ -21,13 +21,13 @@ void encoderUserStatus(char* encoded, char* original) {
     char charValue[512], id[512];
     int intValue, temp, *ASCIITemp, i = 0;
     
-    FILE* encodedFile = fopen(encoded,"w+");
-    FILE* originalFile = fopen(original,"r+");
+    FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/copy.txt","w+");
+    FILE* originalFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/UserInfo.txt","r+");
     
     fgets(charValue, 255, originalFile);
     //USER STATUS 인식 추가
     if ((strcmp(charValue, "*USER STATUS*\n") == 0)) {
-        fprintf(encodedFile, "d1\n");
+        fprintf(encodedFile, "d1\n\n");
     }
     
     addAscii = 0;
@@ -43,7 +43,7 @@ void encoderUserStatus(char* encoded, char* original) {
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
     }
     
-    fprintf(encodedFile, "\n%d", addAscii);
+    fprintf(encodedFile, "\n%d\n", addAscii-10);
     addAscii = 0;
     
     
@@ -59,7 +59,7 @@ void encoderUserStatus(char* encoded, char* original) {
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
         
     }
-    fprintf(encodedFile, "\n%d", addAscii);
+    fprintf(encodedFile, "\n%d\n", addAscii-10);
     addAscii = 0;
     fscanf(originalFile, "%s ", id);
     
@@ -68,10 +68,12 @@ void encoderUserStatus(char* encoded, char* original) {
         if ((strcmp(charValue, "FEMALE"))){
             fprintf(encodedFile, "\n1 F\n");
             fprintf(encodedFile, "%d\n", 'F');
+            fprintf(encodedFile, "%d\n\n", 'F');
         }
         else if (strcmp(charValue, "MALE")){
             fprintf(encodedFile, "\n0 M\n");
             fprintf(encodedFile, "%d\n", 'M');
+            fprintf(encodedFile, "%d\n\n", 'M');
         }
     }
     
@@ -87,7 +89,7 @@ void encoderUserStatus(char* encoded, char* original) {
             
         }
     }
-    fprintf(encodedFile, "\n%d\n", addAscii);
+    fprintf(encodedFile, "\n%d\n\n", addAscii);
     addAscii = 0;
     
     fscanf(originalFile, "%s ", id);
@@ -103,7 +105,7 @@ void encoderUserStatus(char* encoded, char* original) {
             
         }
     }
-    fprintf(encodedFile, "\n%d\n", addAscii);
+    fprintf(encodedFile, "\n%d\n\n", addAscii);
     addAscii = 0;
     fscanf(originalFile, "%s ", id);
     
@@ -118,7 +120,7 @@ void encoderUserStatus(char* encoded, char* original) {
             
         }
     }
-    fprintf(encodedFile, "\n%d\n", addAscii);
+    fprintf(encodedFile, "\n%d\n\n", addAscii);
     addAscii = 0;
     
     
@@ -145,106 +147,136 @@ void encoderUserStatus(char* encoded, char* original) {
 //------------------------------------------------------------------------//
 void item_d2(FILE* originalFile, FILE* encodedFile)
 {
-    char buffer[255]; // ITEMS 확인하는 버퍼
-    
-    while (!feof(originalFile)) {
-        fgets(buffer, 255, originalFile);
-        if ((strcmp("*ITEMS*\n", buffer) == 0))
-        {
-            fseek(originalFile, -10, SEEK_CUR);//파일포인터 옮기기
-            fprintf(encodedFile, "\nd2\n");
-            break;
-        }
+  char buffer[255]; // ITEMS 확인하는 버퍼
+
+  while (!feof(originalFile)) {
+    fgets(buffer, 255, originalFile);
+    if ((strcmp("*ITEMS*\n", buffer) == 0))
+    {
+      fseek(originalFile, -10, SEEK_CUR);//파일포인터 옮기기
+      fprintf(encodedFile, "\nd2\n\n");
+      break;
     }
+  }
 }
-/*encode items*/
+
+void itemASCII(FILE* encodedFile, char item[], char* amount){
+  char temp[100];
+  int num, totalASCII = 0;
+
+  for(int i = 0; item[i] != '\0'; i++){
+    temp[i] = item[i];
+    num = i;
+  }
+  temp[++num] = ' ';
+
+  for(int i = 0; amount[i] != '\0'; i++){
+    temp[i + num] = amount[i];
+  }
+  for(int i = 0; temp[i] != '\n'; i++){
+    fprintf(encodedFile,"%d ", temp[i]);
+    totalASCII += (int)temp[i];
+  }
+  fprintf(encodedFile,"\n");
+  fprintf(encodedFile,"%d\n\n",totalASCII);
+
+  return;
+}
+
 void encodedItems(char* original, char* encoded)
 {
-    char compareWord[255];
-    char originalWord[255];
-    char amountValue[255]; /*아이템 갯수*/
-    int item_Maxcount = 0; /*아이템 최대 갯수*/
-    int c;
-    
-    FILE* originalFile = fopen(original, "r");
-    FILE* encodedFile = fopen(encoded,"a+");
-    
-    item_d2(originalFile, encodedFile);
-    
-    while (!feof(originalFile))
+  char compareWord[255];
+  char originalWord[255];
+  char amountValue[255]; /*아이템 갯수*/
+  int item_Maxcount = 0; /*아이템 최대 갯수*/
+  int c;
+
+  FILE* originalFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/UserInfo.txt", "r");
+     FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/copy.txt","a+");
+     
+  item_d2(originalFile, encodedFile);
+
+  while (!feof(originalFile))
+  {
+
+    fscanf(originalFile, " %s", originalWord);
+
+    if ((strcmp(originalWord, "BOMB:")) == 0)
     {
-        
-        fscanf(originalFile, " %s", originalWord);
-        
-        if ((strcmp(originalWord, "BOMB:")) == 0)
-        {
-            fgets(amountValue, 255, originalFile);
-            fprintf(encodedFile, "%s %d\n", "i1", atoi(amountValue));
-            item_Maxcount += atoi(amountValue);
-        }
-        if ((strcmp(originalWord, "POTION:")) == 0)
-        {
-            fgets(amountValue, 255, originalFile);
-            fprintf(encodedFile, "%s %d\n", "i2", atoi(amountValue));
-            item_Maxcount += atoi(amountValue);
-        }
-        if ((strcmp(originalWord, "CURE:")) == 0)
-        {
-            fgets(amountValue, 255, originalFile);
-            fprintf(encodedFile, "%s %d\n", "i3", atoi(amountValue));
-            item_Maxcount += atoi(amountValue);
-        }
-        if ((strcmp(originalWord, "BOOK:")) == 0)
-        {
-            fgets(amountValue, 255, originalFile);
-            fprintf(encodedFile, "%s %d\n", "i4", atoi(amountValue));
-            item_Maxcount += atoi(amountValue);
-        }
-        if ((strcmp(originalWord, "SHIELD:")) == 0)
-        {
-            fgets(amountValue, 255, originalFile);
-            fprintf(encodedFile, "%s %d\n", "i5", atoi(amountValue));
-            item_Maxcount += atoi(amountValue);
-        }
-        if ((strcmp(originalWord, "CANNON:")) == 0)
-        {
-            fgets(amountValue, 255, originalFile);
-            fprintf(encodedFile, "%s %d\n", "i6", atoi(amountValue));
-            item_Maxcount += atoi(amountValue);
-        }
-        // 아무것도 없을경우 오류 출력
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i1", atoi(amountValue));
+      itemASCII(encodedFile,"i1",amountValue);
+      item_Maxcount += atoi(amountValue);
     }
-    
-    if (item_Maxcount == 0)
+    if ((strcmp(originalWord, "POTION:")) == 0)
     {
-        fprintf(stderr, "No Item Error occured.");
-        
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i2", atoi(amountValue));
+      itemASCII(encodedFile,"i2",amountValue);
+      item_Maxcount += atoi(amountValue);
     }
-    // 여기까지 인코드 작업
-    
-    if (item_Maxcount >= 256)
+    if ((strcmp(originalWord, "CURE:")) == 0)
     {
-        fprintf(stderr, "item amount error occured");
-        exit(1);
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i3", atoi(amountValue));
+      itemASCII(encodedFile,"i3",amountValue);
+      item_Maxcount += atoi(amountValue);
     }
-    // 아이템 최대갯수가 255를 넘었을 경우 오류출력 (이거를 굳이 해야하나 모르>겠네요)
-    fclose(originalFile);
-    fclose(encodedFile);
-    return;
+    if ((strcmp(originalWord, "BOOK:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i4", atoi(amountValue));
+      itemASCII(encodedFile,"i4",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    if ((strcmp(originalWord, "SHIELD:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i5", atoi(amountValue));
+      itemASCII(encodedFile,"i5",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    if ((strcmp(originalWord, "CANNON:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i6", atoi(amountValue));
+      itemASCII(encodedFile,"i6",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    // 아무것도 없을경우 오류 출력
+  }
+
+  if (item_Maxcount == 0)
+  {
+    fprintf(stderr, "No Item Error occured.");
+
+  }
+  // 여기까지 인코드 작업
+
+  if (item_Maxcount >= 256)
+  {
+    fprintf(stderr, "item amount error occured");
+    exit(1);
+  }
+  // 아이템 최대갯수가 255를 넘었을 경우 오류출력 (이거를 굳이 해야하나 모르>겠네요)
+  fclose(originalFile);
+  fclose(encodedFile);
+  return;
 }
 
 
-void friendList(char* original, char* encoded) {
+
+int friendList(char* original, char* encoded) {
     //originalFile = 원본파일, encodedFile =인코딩 된 파일
     char temp[MAX_STRING_SIZE];
     int *asciiResult;
     int lenStr,i=0;
-    FILE* originalFile = fopen(original, "r");
-    FILE* encodedFile = fopen(encoded,"a+");
+    FILE* originalFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/UserInfo.txt", "r");
+    FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/copy.txt","a+");
     while (1) {//파일포인터 FRIENDLIST까지 이동시키기 위한 조치
         fgets(temp, 256, originalFile);
         if((strcmp(temp, "*FRIENDS LIST*\n")) == 0){
-            fprintf(encodedFile, "\nd3\n");
+            fprintf(encodedFile, "d3\n\n");
             break;
         }
     }
@@ -257,12 +289,12 @@ void friendList(char* original, char* encoded) {
             if (strcmp(temp, "MALE") == 0) {
                 fprintf(encodedFile, "0 M\n");
                 fprintf(encodedFile, "%d\n", 'M');
-                fprintf(encodedFile, "%d\n", 'M');
+                fprintf(encodedFile, "%d\n\n", 'M');
             }//MALE인 경우
             else if (strcmp(temp, "FEMALE") == 0) {
                 fprintf(encodedFile, "1 F\n");
                 fprintf(encodedFile, "%d\n", 'F');
-                fprintf(encodedFile, "%d\n", 'F');
+                fprintf(encodedFile, "%d\n\n", 'F');
             }
             //FEMALE인 경우
             else { //GENDER가 아닌경우(ID,NAME,AGE 인 경우)
@@ -280,26 +312,61 @@ void friendList(char* original, char* encoded) {
                     fprintf(encodedFile, "%d ", asciiResult[i]);
                     
                 }
-                fprintf(encodedFile, "\n%d", addAscii);
-                
-                
+                fprintf(encodedFile, "\n%d\n", addAscii);
                 
                 fprintf(encodedFile, "\n");
             }
         }
     }
+    i = ftell(originalFile);
     fclose(originalFile);
     fclose(encodedFile);
-    return;
+    return i;
+}
+
+void encodeDescription(char* original, char* encoded, int point)
+{
+    char charValue[512], desline[512];
+    int intValue, temp, * ASCIITemp, i = 0;
+    
+    FILE* originalFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/UserInfo.txt", "r");
+    FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/copy.txt","a+");
+    
+    fseek(originalFile, point-30, SEEK_SET);
+    
+    while (1) {//파일포인터 FRIENDLIST까지 이동시키기 위한 조치
+        fgets(charValue, 255, originalFile);
+        //USER STATUS 인식 추가
+        if ((strcmp(charValue, "*DESCRIPTION*\n") == 0)) {
+            fprintf(encodedFile, "d4\n\n");
+            break;
+        }
+        }
+    
+
+    addAscii = 0;
+
+    while (!feof(originalFile))
+    {
+        fgets(charValue, 255, originalFile);
+        intValue = strlen(charValue)-1;
+        charValue[intValue] = '\0';
+        fprintf(encodedFile, "%d %s\n", intValue,charValue);
+        ASCIITemp = atoAscii(charValue);
+        for (int i = 0; i < intValue; i++)
+            fprintf(encodedFile, "%d ", ASCIITemp[i]);
+        fprintf(encodedFile, "\n%d\n", addAscii);
+    }
 }
 
 //--------------------------------------------------------------------------------------//
 
 void functionEncoder(char* originalFile, char* encodedFile){
+    int i=0;
     encoderUserStatus(encodedFile,originalFile);
     encodedItems(originalFile,encodedFile);
-    friendList(originalFile,encodedFile);
-    
+    i = friendList(originalFile,encodedFile);
+    encodeDescription(originalFile, encodedFile, i);
     return;
 }
 

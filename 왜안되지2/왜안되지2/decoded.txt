@@ -1,1 +1,119 @@
+void item_d2(FILE* originalFile, FILE* encodedFile)
+{
+  char buffer[255]; // ITEMS 확인하는 버퍼
+
+  while (!feof(originalFile)) {
+    fgets(buffer, 255, originalFile);
+    if ((strcmp("*ITEMS*\n", buffer) == 0))
+    {
+      fseek(originalFile, -10, SEEK_CUR);//파일포인터 옮기기
+      fprintf(encodedFile, "\nd2\n");
+      break;
+    }
+  }
+}
+
+void itemASCII(FILE* encodedFile, char item[], char* amount){
+  char temp[100];
+  int num, totalASCII = 0;
+
+  for(int i = 0; item[i] != '\0'; i++){
+    temp[i] = item[i];
+    num = i;
+  }
+  temp[++num] = ' ';
+
+  for(int i = 0; amount[i] != '\0'; i++){
+    temp[i + num] = amount[i];
+  }
+  for(int i = 0; temp[i] != '\n'; i++){
+    fprintf(encodedFile,"%d ", temp[i]);
+    totalASCII += (int)temp[i];
+  }
+  fprintf(encodedFile,"\n");
+  fprintf(encodedFile,"%d\n\n",totalASCII);
+
+  return;
+}
+
+void encodedItems(char* original, char* encoded)
+{
+  char compareWord[255];
+  char originalWord[255];
+  char amountValue[255]; /*아이템 갯수*/
+  int item_Maxcount = 0; /*아이템 최대 갯수*/
+  int c;
+
+  FILE* originalFile = fopen(original, "r");
+  FILE* encodedFile = fopen(encoded,"a+");
+
+  item_d2(originalFile, encodedFile);
+
+  while (!feof(originalFile))
+  {
+
+    fscanf(originalFile, " %s", originalWord);
+
+    if ((strcmp(originalWord, "BOMB:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i1", atoi(amountValue));
+      itemASCII(encodedFile,"i1",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    if ((strcmp(originalWord, "POTION:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i2", atoi(amountValue));
+      itemASCII(encodedFile,"i2",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    if ((strcmp(originalWord, "CURE:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i3", atoi(amountValue));
+      itemASCII(encodedFile,"i3",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    if ((strcmp(originalWord, "BOOK:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i4", atoi(amountValue));
+      itemASCII(encodedFile,"i4",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    if ((strcmp(originalWord, "SHIELD:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i5", atoi(amountValue));
+      itemASCII(encodedFile,"i5",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    if ((strcmp(originalWord, "CANNON:")) == 0)
+    {
+      fgets(amountValue, 255, originalFile);
+      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i6", atoi(amountValue));
+      itemASCII(encodedFile,"i6",amountValue);
+      item_Maxcount += atoi(amountValue);
+    }
+    // 아무것도 없을경우 오류 출력
+  }
+
+  if (item_Maxcount == 0)
+  {
+    fprintf(stderr, "No Item Error occured.");
+
+  }
+  // 여기까지 인코드 작업
+
+  if (item_Maxcount >= 256)
+  {
+    fprintf(stderr, "item amount error occured");
+    exit(1);
+  }
+  // 아이템 최대갯수가 255를 넘었을 경우 오류출력 (이거를 굳이 해야하나 모르>겠네요)
+  fclose(originalFile);
+  fclose(encodedFile);
+  return;
+}
 
