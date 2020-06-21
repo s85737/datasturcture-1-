@@ -6,6 +6,7 @@
 #define MAX_BUF_SIZE 256
 int line = 0;
 void printError(int line);
+void printDesError(int line);
 
 char* ASCIICheck(char* input){
     
@@ -76,8 +77,12 @@ int modifyCheck(int line ,int intValue ,int ASCIISum, char* charResult, char* ch
         
         //case 2 : 원본 문자열이나, ASCII 문자열 둘 중 하나가 변조되었을 때
         fprintf(stderr, "라인 %d에서 변조가 일어났습니다. %d %d %s %s\n", line, intTemp, ASCIISum, charResult, charValue);
+        if(strcmp(charValue, "d4")){
+        }else if(strcmp(charResult, "d4")){
+        }else{
         printError(line);
-        if(ASCIISum == intTemp){
+        }
+            if(ASCIISum == intTemp){
             //case 2-1 : 아스키코드 합의 값이 일치할때, 나머지 2개 변조의심
             return 1;
         }else if(intValue == lenStr){
@@ -86,7 +91,54 @@ int modifyCheck(int line ,int intValue ,int ASCIISum, char* charResult, char* ch
         }else{
             //case 2-2 : 아스키 코드 합이 둘다 일치하지않고, 문자열 길이도 일치하지 않을때
             //감점 최대한 덜되게
+            return 1;
+            
+        }
+        
+    }
+    
+    //default
+    return 0;
+}
+
+int modifyDesCheck(int line ,int intValue ,int ASCIISum, char* charResult, char* charValue){
+    
+    size_t lenStr, ASCIILen;
+    int intTemp=0;
+    
+    lenStr = strlen(charValue);
+    ASCIILen = strlen(charResult);
+    
+    for(int i = 0; i< ASCIILen+1; i++){
+        intTemp += charResult[i];
+    }
+    
+    if(strcmp(charValue, charResult) == 0 &&
+       intValue == lenStr &&
+       ASCIISum == intTemp
+       ){
+        //case 1 : 원본 문자열과, ASCII 문자열이 둘다 변조되지 않았을 때
+        return 0;
+        
+    }else{
+        
+        //case 2 : 원본 문자열이나, ASCII 문자열 둘 중 하나가 변조되었을 때
+//        fprintf(stderr, "라인 %d에서 변조가 일어났습니다. %d %d %s %s\n", line, intTemp, ASCIISum, charResult, charValue);
+        if(strcmp(charValue, "d4")){
+        }else if(strcmp(charResult, "d4")){
+        }else{
+        printDesError(line);
+        }
+            if(ASCIISum == intTemp){
+            //case 2-1 : 아스키코드 합의 값이 일치할때, 나머지 2개 변조의심
+            return 1;
+        }else if(intValue == lenStr){
+            // 합의 값이 둘다 일치하지 않을때는 나머지 2개를 신뢰, 문자열 길이가 일치하면 0출
             return 0;
+        }else{
+            //case 2-2 : 아스키 코드 합이 둘다 일치하지않고, 문자열 길이도 일치하지 않을때
+            //감점 최대한 덜되게
+            return 1;
             
         }
         
@@ -139,7 +191,7 @@ void printError(int line){
             break;
     }
     
-    if(line>12){
+    if(line>12 ){
         friendIndex = (line - 13) / 5 + 1 ;
         line - 13;
         switch ((line % 5)) {
@@ -166,6 +218,14 @@ void printError(int line){
     }
 }
 
+
+void printDesError(int line){
+if(line == 0){
+    return;
+}else{
+    fprintf(stderr,"*DESCRIPTILON* %d라인에서 변조가 일어났습니다.\n",line);
+}
+}
 /**
  *decoder 함수에서  d1 문자열을 인식하면 실행되는 함수입니다.
  *파일포인터는 d1 끝에서 시작한다고 가정하고,
@@ -470,8 +530,14 @@ int decoderItems(int filePointer, char* encoded, char* decoded){
         fprintf(stderr,"\n*ITEMS 섹션 구분에서 변조가 발생했습니다.\n");
     }
     
-    
-    
+    while (1) {//파일포인터 FRIENDLIST까지 이동시키기 위한 조치
+        getPoint = ftell(encodedFile);
+        fgets(buffer, 256, encodedFile);
+        if((strcmp(buffer, "d3\n")) == 0){
+            fseek(encodedFile, getPoint, SEEK_SET);
+            break;
+        }
+    }
     
     
     filePointer = ftell(encodedFile);
@@ -483,7 +549,7 @@ int decoderItems(int filePointer, char* encoded, char* decoded){
 
 //-----------------------------------------------------
 
-void decoderFriendsList(int filePointer, char* encoded, char* decoded){
+int decoderFriendsList(int filePointer, char* encoded, char* decoded){
     FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지2/왜안되지2/encoded.txt", "rt");
     FILE* decodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지2/왜안되지2/decoded.txt", "at+");
     
@@ -523,14 +589,21 @@ void decoderFriendsList(int filePointer, char* encoded, char* decoded){
         fscanf(encodedFile, "%s ",charValue);
         //길이에서 개행문자 제거
         
+        
         //ASCII코드 문자열로 변환
         fgets(asciiTemp, 256, encodedFile);
         fgets(asciiValue, 256, encodedFile);
         ASCIISum = atoi(asciiValue);
         strcpy(charResult, ASCIICheck(asciiTemp));
-        
+        if((strcmp(charValue, "d4"))==0){
+            fseek(encodedFile, getPoint, SEEK_SET);
+            break;
+        }else if((strcmp(charResult, "d4"))==0){
+            fseek(encodedFile, getPoint, SEEK_SET);
+            break;
+        }
         temp = modifyCheck(line, intValue, ASCIISum, charResult, charValue);
-        
+
         if(temp == 0){
             fprintf(decodedFile,"FRIEND%d ID: %s\n",index ,charValue);
         }else{
@@ -663,25 +736,137 @@ void decoderFriendsList(int filePointer, char* encoded, char* decoded){
             printError(line);
         }
         getPoint = ftell(encodedFile);
-        
-        temp = ftell(encodedFile);
-        fgets(charValue, 256, encodedFile);
-        fgets(charValue, 256, encodedFile);
-        
-        if(feof(encodedFile)) break;
-        else fseek(encodedFile, temp, SEEK_SET);
-    }
     
+        if((strcmp(getSpace, "d4"))==0){
+            fseek(encodedFile, getPoint, SEEK_SET);
+            break;
+        }else if((strcmp(charValue, "d4"))==0){
+        fseek(encodedFile, getPoint, SEEK_SET);
+            break;
+        }else if((strcmp(charValue, "/"))==0){
+        fseek(encodedFile, getPoint, SEEK_SET);
+        break;
+        }
+        
+    }
+    getPoint = ftell(encodedFile);
     fclose(encodedFile);
     fclose(decodedFile);
-    return;
+    return getPoint;
 }
+
+void DecodeDescription(int filePointer, char* encoded, char* decoded)
+{
+    FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지2/왜안되지2/encoded.txt", "rt");
+    FILE* decodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지2/왜안되지2/decoded.txt", "at+");
+
+    char numValue[256], asciiTemp[256];
+    char charValue[256], asciiValue[256];
+    char* charResult = malloc(sizeof(char) * 256);
+    int intValue, temp, ASCIISum;
+    int deline=0;
+
+
+    char getSpace[512];
+    int getPoint;
+
+    fseek(encodedFile, filePointer, SEEK_SET);
+    getPoint = ftell(encodedFile);
+
+    fscanf(encodedFile, "%s ",numValue);
+     intValue = atoi(numValue);
+     fscanf(encodedFile, "%s ",charValue);
+     //길이에서 개행문자 제거
+     
+     //ASCII코드 문자열로 변환
+     fgets(asciiTemp, 256, encodedFile);
+     fgets(asciiValue, 256, encodedFile);
+     ASCIISum = atoi(asciiValue);
+     strcpy(charResult, ASCIICheck(asciiTemp));
+     
+     temp = modifyDesCheck(deline, intValue, ASCIISum, charResult, charValue);
+     
+     if(temp == 0){
+         fprintf(decodedFile, "*DESCRIPTION*\n");
+     }else{
+           fprintf(stderr, "*DESCRIPTION* 섹션 구분에서 변조가 발생했습니다.\n");
+          fprintf(decodedFile, "*DESCRIPTION*\n");
+     }
+
+
+    fseek(encodedFile, getPoint, SEEK_SET);
+    fgets(getSpace, 512, encodedFile);
+    fgets(getSpace, 512, encodedFile);
+    fgets(getSpace, 512, encodedFile);
+    getPoint = ftell(encodedFile);
+    fgets(getSpace, 512, encodedFile);
+    if((strcmp(getSpace, "\n"))!=0){
+        fseek(encodedFile, getPoint, SEEK_SET);
+        fprintf(stderr, "*DESCRIPTION* 섹션 구분에서 변조가 발생했습니다.\n");
+    }
+    getPoint = ftell(encodedFile);
+
+
+
+        line++;
+        
+        while(!feof(encodedFile)){
+            deline++;
+        getPoint = ftell(encodedFile);
+        fscanf(encodedFile, "%s ", numValue);
+        intValue = atoi(numValue);
+        fscanf(encodedFile, "%s ", charValue);
+
+        // 글자길이랑 , 원본 받기
+
+        fgets(asciiTemp, 256, encodedFile); // 각 글자들에 대응하는 아스키코드 값 받기
+        fgets(asciiValue, 256, encodedFile); // 아스키코드 값들의 합을 받기
+        ASCIISum = atoi(asciiValue); //ASCIISum에 값의 합 정수형으로 저장하기
+        strcpy(charResult, ASCIICheck(asciiTemp));
+        // charResult에 ASCIICheck(asciiTemp)의 값을 복사하여 붙여넣음
+
+        temp = modifyDesCheck(line, intValue, ASCIISum, charResult, charValue);
+
+        if (temp == 0) {
+            fprintf(decodedFile, "%s\n", charValue);
+        }
+        else {
+            fprintf(decodedFile, "%s\n", charResult);
+        }
+        fseek(encodedFile, getPoint, SEEK_SET);
+        fgets(getSpace, 512, encodedFile);
+        fgets(getSpace, 512, encodedFile);
+        fgets(getSpace, 512, encodedFile);
+        getPoint = ftell(encodedFile);
+        fgets(getSpace, 512, encodedFile);
+             if(feof(encodedFile)) break;
+        if ((strcmp(getSpace, "\n")) != 0) {
+            fseek(encodedFile, getPoint, SEEK_SET);
+            printDesError(deline);
+        }
+            getPoint = ftell(encodedFile);
+            fgets(getSpace, 256, encodedFile);
+            fgets(getSpace, 256, encodedFile);
+
+            if(feof(encodedFile)) break;
+            else fseek(encodedFile, getPoint, SEEK_SET);
+
+        
+}
+
+        fclose(encodedFile);
+        fclose(decodedFile);
+
+    
+}
+
 
 void functionDecoder(char* encodedFile, char* decodedFile){
     int filePointer = 0;
     filePointer = decoderUserStatus(encodedFile, decodedFile);
     filePointer = decoderItems(filePointer, encodedFile, decodedFile);
-    decoderFriendsList(filePointer,encodedFile, decodedFile);
+    filePointer = decoderFriendsList(filePointer,encodedFile, decodedFile);
+    DecodeDescription(filePointer, encodedFile, decodedFile);
 }
 
 int main(int argc, char* argv[])

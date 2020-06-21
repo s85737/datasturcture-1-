@@ -141,7 +141,7 @@ void postOrder(treeNode* root){
     stackNode* top;
     top = createStack();
     
-    push(&top, root);
+    push(&top, root); //최종적으로 출력될 root 노드를 스택 제일 아래에 둔다.
     while(1){
                 while(root){ //더이상 자식 노드가 없을때 까지 탐색
             
@@ -152,13 +152,17 @@ void postOrder(treeNode* root){
             
         }
         
+        // 왼쪽에 자식노드가 더이상 없을 때
+        
+        // 루트에 현재 top 노드 pop
         root = pop(&top);
         
-        if(root->right && peek(&top) == root->right ){
+        //아직 현재 탐색중인 root 노드의 오른쪽 자식노드가 있고 top의 값과 같으면 print 하지않고 pop후 현재 root push, root오른쪽으로 이동
+        if(root->right && peek(&top) == root->right){
             pop(&top);
             push(&top, root);
             root = root->right;
-        }else{
+        }else{ // 그 외일경우 root 출력, root를 null로 만든다.
             printf("%d ",root->data);
             root = NULL;
         }

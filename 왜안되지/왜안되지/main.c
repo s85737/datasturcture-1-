@@ -333,12 +333,20 @@ void encodeDescription(char* original, char* encoded, int point)
     FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/copy.txt","a+");
     
     fseek(originalFile, point-30, SEEK_SET);
+    addAscii =0;
     
     while (1) {//파일포인터 FRIENDLIST까지 이동시키기 위한 조치
         fgets(charValue, 255, originalFile);
         //USER STATUS 인식 추가
         if ((strcmp(charValue, "*DESCRIPTION*\n") == 0)) {
-            fprintf(encodedFile, "d4\n\n");
+            strcpy(charValue, "d4\n");
+            intValue = strlen(charValue)-1;
+            charValue[intValue] = '\0';
+            fprintf(encodedFile, "%d %s\n", intValue,charValue);
+            ASCIITemp = atoAscii(charValue);
+            for (int i = 0; i < intValue; i++)
+                fprintf(encodedFile, "%d ", ASCIITemp[i]);
+            fprintf(encodedFile, "\n%d\n\n", addAscii);
             break;
         }
         }
