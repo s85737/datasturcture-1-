@@ -37,7 +37,7 @@ void encoderUserStatus(char* encoded, char* original) {
         fgets(charValue, 255, originalFile);
         intValue = strlen(charValue) - 1;
         fprintf(encodedFile, "%d ", intValue);
-        fprintf(encodedFile, "%s", charValue);
+        fprintf(encodedFile, "%s\n", charValue);
         ASCIITemp = atoAscii(charValue);
         for (int i = 0; i < intValue; i++)
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
@@ -53,7 +53,7 @@ void encoderUserStatus(char* encoded, char* original) {
         fgets(charValue, 255, originalFile);
         intValue = strlen(charValue) - 1;
         fprintf(encodedFile, "\n%d ", intValue);
-        fprintf(encodedFile, "%s", charValue);
+        fprintf(encodedFile, "%s\n", charValue);
         ASCIITemp = atoAscii(charValue);
         for (int i = 0; i < intValue; i++)
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
@@ -66,12 +66,12 @@ void encoderUserStatus(char* encoded, char* original) {
     if ((strcmp(id, "GENDER:") == 0)) {
         fgets(charValue, 255, originalFile);
         if ((strcmp(charValue, "FEMALE"))){
-            fprintf(encodedFile, "\n1 F\n");
+            fprintf(encodedFile, "\n1 F\n\n");
             fprintf(encodedFile, "%d\n", 'F');
             fprintf(encodedFile, "%d\n\n", 'F');
         }
         else if (strcmp(charValue, "MALE")){
-            fprintf(encodedFile, "\n0 M\n");
+            fprintf(encodedFile, "\n0 M\n\n");
             fprintf(encodedFile, "%d\n", 'M');
             fprintf(encodedFile, "%d\n\n", 'M');
         }
@@ -82,7 +82,7 @@ void encoderUserStatus(char* encoded, char* original) {
         fscanf(originalFile, "%[^ \n]s", charValue);
         
         intValue = strlen(charValue);
-        fprintf(encodedFile, "%d %s\n", intValue, charValue);
+        fprintf(encodedFile, "%d %s\n\n", intValue, charValue);
         ASCIITemp = atoAscii(charValue);
         for(i=0; i < intValue; i++){
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
@@ -98,7 +98,7 @@ void encoderUserStatus(char* encoded, char* original) {
         fscanf(originalFile, "%[^ \n]s", charValue);
         
         intValue = strlen(charValue);
-        fprintf(encodedFile, "%d %s\n", intValue, charValue);
+        fprintf(encodedFile, "%d %s\n\n", intValue, charValue);
         ASCIITemp = atoAscii(charValue);
         for(i=0; i < intValue; i++){
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
@@ -113,7 +113,7 @@ void encoderUserStatus(char* encoded, char* original) {
         fscanf(originalFile, "%[^ \n]s", charValue);
         
         intValue = strlen(charValue);
-        fprintf(encodedFile, "%d %s\n", intValue, charValue);
+        fprintf(encodedFile, "%d %s\n\n", intValue, charValue);
         ASCIITemp = atoAscii(charValue);
         for(i=0; i < intValue; i++){
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
@@ -130,7 +130,7 @@ void encoderUserStatus(char* encoded, char* original) {
         fscanf(originalFile, "%[^ \n]s", charValue);
         
         intValue = strlen(charValue);
-        fprintf(encodedFile, "%d %s\n", intValue, charValue);
+        fprintf(encodedFile, "%d %s\n\n", intValue, charValue);
         ASCIITemp = atoAscii(charValue);
         for(i=0; i < intValue; i++){
             fprintf(encodedFile, "%d ", ASCIITemp[i]);
@@ -204,42 +204,42 @@ void encodedItems(char* original, char* encoded)
     if ((strcmp(originalWord, "BOMB:")) == 0)
     {
       fgets(amountValue, 255, originalFile);
-      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i1", atoi(amountValue));
+      fprintf(encodedFile, "%d %s %d\n\n",(int)strlen(amountValue)+1, "i1", atoi(amountValue));
       itemASCII(encodedFile,"i1",amountValue);
       item_Maxcount += atoi(amountValue);
     }
     if ((strcmp(originalWord, "POTION:")) == 0)
     {
       fgets(amountValue, 255, originalFile);
-      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i2", atoi(amountValue));
+      fprintf(encodedFile, "%d %s %d\n\n",(int)strlen(amountValue)+1, "i2", atoi(amountValue));
       itemASCII(encodedFile,"i2",amountValue);
       item_Maxcount += atoi(amountValue);
     }
     if ((strcmp(originalWord, "CURE:")) == 0)
     {
       fgets(amountValue, 255, originalFile);
-      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i3", atoi(amountValue));
+      fprintf(encodedFile, "%d %s %d\n\n",(int)strlen(amountValue)+1, "i3", atoi(amountValue));
       itemASCII(encodedFile,"i3",amountValue);
       item_Maxcount += atoi(amountValue);
     }
     if ((strcmp(originalWord, "BOOK:")) == 0)
     {
       fgets(amountValue, 255, originalFile);
-      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i4", atoi(amountValue));
+      fprintf(encodedFile, "%d %s %d\n\n",(int)strlen(amountValue)+1, "i4", atoi(amountValue));
       itemASCII(encodedFile,"i4",amountValue);
       item_Maxcount += atoi(amountValue);
     }
     if ((strcmp(originalWord, "SHIELD:")) == 0)
     {
       fgets(amountValue, 255, originalFile);
-      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i5", atoi(amountValue));
+      fprintf(encodedFile, "%d %s %d\n\n",(int)strlen(amountValue)+1, "i5", atoi(amountValue));
       itemASCII(encodedFile,"i5",amountValue);
       item_Maxcount += atoi(amountValue);
     }
     if ((strcmp(originalWord, "CANNON:")) == 0)
     {
       fgets(amountValue, 255, originalFile);
-      fprintf(encodedFile, "%d %s %d\n",(int)strlen(amountValue)+1, "i6", atoi(amountValue));
+      fprintf(encodedFile, "%d %s %d\n\n",(int)strlen(amountValue)+1, "i6", atoi(amountValue));
       itemASCII(encodedFile,"i6",amountValue);
       item_Maxcount += atoi(amountValue);
     }
@@ -271,15 +271,26 @@ int friendList(char* original, char* encoded) {
     char temp[MAX_STRING_SIZE];
     int *asciiResult;
     int lenStr,i=0;
+    char charValue[512], desline[512];
+    int intValue, * ASCIITemp;
     FILE* originalFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/UserInfo.txt", "r");
     FILE* encodedFile = fopen("/Users/s85737/Documents/2020:1/assignment/datastructure/datastucture1/왜안되지/왜안되지/copy.txt","a+");
+    addAscii = 0;
     while (1) {//파일포인터 FRIENDLIST까지 이동시키기 위한 조치
-        fgets(temp, 256, originalFile);
-        if((strcmp(temp, "*FRIENDS LIST*\n")) == 0){
-            fprintf(encodedFile, "d3\n\n");
-            break;
-        }
+      fgets(temp, 256, originalFile);
+      if((strcmp(temp, "*FRIENDS LIST*\n")) == 0){
+        strcpy(charValue, "d3\n");
+        intValue = strlen(charValue)-1;
+        charValue[intValue] = '\0';
+        fprintf(encodedFile, "%d %s\n\n", intValue,charValue);
+        ASCIITemp = atoAscii(charValue);
+        for (int i = 0; i < intValue; i++)
+          fprintf(encodedFile, "%d ", ASCIITemp[i]);
+        fprintf(encodedFile, "\n%d\n\n", addAscii);
+        break;
+      }
     }
+
     while (1) {
         fscanf(originalFile, "%s", temp);//한단어 읽기
         if (strcmp(temp, "*DESCRIPTION*") == 0) break;//friendlist끝난시점이면 종료
@@ -287,12 +298,12 @@ int friendList(char* original, char* encoded) {
             fscanf(originalFile, "%s %[^\n]s", temp, temp);
             //값의 index와 value를 두번받음
             if (strcmp(temp, "MALE") == 0) {
-                fprintf(encodedFile, "0 M\n");
+                fprintf(encodedFile, "0 M\n\n");
                 fprintf(encodedFile, "%d\n", 'M');
                 fprintf(encodedFile, "%d\n\n", 'M');
             }//MALE인 경우
             else if (strcmp(temp, "FEMALE") == 0) {
-                fprintf(encodedFile, "1 F\n");
+                fprintf(encodedFile, "1 F\n\n");
                 fprintf(encodedFile, "%d\n", 'F');
                 fprintf(encodedFile, "%d\n\n", 'F');
             }
@@ -306,7 +317,7 @@ int friendList(char* original, char* encoded) {
                 //}
                 addAscii = 0;
                 lenStr = strlen(temp);
-                fprintf(encodedFile, "%d %s\n", lenStr, temp);
+                fprintf(encodedFile, "%d %s\n\n", lenStr, temp);
                 asciiResult = atoAscii(temp);
                 for(i=0; i < lenStr; i++){
                     fprintf(encodedFile, "%d ", asciiResult[i]);
